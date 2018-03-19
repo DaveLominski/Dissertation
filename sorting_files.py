@@ -6,13 +6,6 @@ import re
 source = os.listdir("D:\\University\\Dissertation\\Database\\KDEF")
 
 for path in glob.glob("D:\\University\\Dissertation\\Database\\KDEF\\*\\*"):
-    #dirname, filename = os.path.split(path)
-    #print(path)
-    #print(dirname, filename)
-    #print(os.listdir(dirname))
-    #a = os.listdir(dirname)
-    #print(a)
-
 
     if "AFS" in path:
         print("LOL")
