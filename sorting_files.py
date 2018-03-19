@@ -7,6 +7,7 @@ source = os.listdir("D:\\University\\Dissertation\\Database\\KDEF")
 
 for path in glob.glob("D:\\University\\Dissertation\\Database\\KDEF\\*\\*"):
 
+
     if "AFS" in path:
         print("LOL")
         move(path, ("D:\\University\\Dissertation\\Database\\sorted_images\\afraid"))
