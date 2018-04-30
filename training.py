@@ -9,11 +9,11 @@ from sklearn.svm import SVC
 from sklearn.externals import joblib
 
 
-emotions = ["happy", "neutral", "sad", "surprised"] #"afraid", "angry", "disgusted",
+emotions = ["happy", "neutral", "sad", "surprised"] # "afraid", "angry", "disgusted", 
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("D:\\dlib-19.9\\shape_predictor_68_face_landmarks.dat")
-clf = SVC(kernel='linear', probability=True, tol=1e-3)
+clf = SVC(kernel='poly', probability=True, tol=1e-3)
 
 data = {}
 '''This function has been written by Paul Van Gent from www.paulvangent.com'''
@@ -21,10 +21,10 @@ def getFiles(emotion):
     
     files = glob.glob("D:\\University\\Dissertation\\Database\\completeJoint\\%s\\*" %emotion)
     random.shuffle(files)
-    training = files[:int(len(files)*0.9)]
-    prediction = files[-int(len(files)*0.1):]
+    training = files
+  
 
-    return training, prediction
+    return training
 '''This function has been written by Paul Van Gent from www.paulvangent.com'''
 def getLandmarks(image):
     detections = detector(image,1)
@@ -62,12 +62,11 @@ def makeSets():
 
     training_data = []
     training_labels = []
-    prediction_data = []
-    prediction_labels = []
 
     for emotion in emotions:
+
         print("working on %s" %emotion)
-        training, prediction = getFiles(emotion)
+        training= getFiles(emotion)
 
 
         for item in training:
@@ -81,36 +80,32 @@ def makeSets():
                 training_data.append(data['landmarks_vectorised'])
                 training_labels.append(emotions.index(emotion))
 
-        for item in prediction:
-            image = cv2.imread(item)
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            clahe_image = clahe.apply(gray)
-            getLandmarks(clahe_image)
-            if data['landmarks_vectorised'] == "error":
-                print("No face detected")
-            else:
-                prediction_data.append(data['landmarks_vectorised'])
-                prediction_labels.append(emotions.index(emotion))
                     
-    return training_data, training_labels, prediction_data, prediction_labels
+    return training_data, training_labels
 
-joblib.dump(clf, 'trainedData.pkl')
 
-'''This function has been written by Paul Van Gent from www.paulvangent.com'''
-accuracy = []
 
-for i in range(0,10):
-    print("Making sets %s" %i)
-    training_data, training_labels, prediction_data, prediction_labels = makeSets()
-    nparTrain = np.array(training_data)
-    print("Training SVM LINEAR %s" %i)
-    clf.fit(nparTrain, training_labels)
-    
-    print("Getting accuracies %s" %i)
-    nparPred = np.array(prediction_data)
-    pred_lin = clf.score(nparPred, prediction_labels)
-    print("Linear: ", pred_lin)
-    accuracy.append(pred_lin)
+training_data, training_labels = makeSets()
+nparTrain = np.array(training_data)
+a = clf.fit(nparTrain, training_labels)
+print(a)
+joblib.dump(clf, 'trained4PolyData.pkl')
+print("Dataset trained saved")
 
-print("Mean value lin svm: %s" %np.mean(accuracy))
-                    
+
+
+"""
+clf.predict(prediction_data)
+prob = clf.predict_proba(prediction_data)
+prob_s = np.around(prob, decimals=3)
+prob_s = prob_s*100
+pred = clf.predict(prediction_data)
+
+for count, i in enumerate(pred):
+    print("Prediction: ", emotions[i])
+    print ('Probability: ')
+    print ('Surprised: ', prob_s[count,3])
+    print ('Neutral: ', prob_s[count,1])
+    print ('Happy: ', prob_s[count,0])
+    print ('Sad: ', prob_s[count ,2])"""
+
