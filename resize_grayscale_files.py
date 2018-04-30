@@ -9,7 +9,7 @@ faceDetectionFour = cv2.CascadeClassifier("haarcascade_frontalface_alt_tree.xml"
 directory = os.listdir("D:\\University\\Dissertation\\Database\\dave\\")
 fileNo = 1
 
-
+'''This function has been written by Paul Van Gent from www.paulvangent.com'''
 for folders in directory:
     folder = os.listdir("D:\\University\\Dissertation\\Database\\dave\\" + folders)
     os.chdir("D:\\University\\Dissertation\\Database\\dave\\" + folders)
