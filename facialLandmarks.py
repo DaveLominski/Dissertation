@@ -94,7 +94,7 @@ def makeSets():
                     
     return training_data, training_labels, prediction_data, prediction_labels
 
-joblib.dump(clf, 'trainedData.pkl')
+
 
 '''This function has been written by Paul Van Gent from www.paulvangent.com'''
 accuracy = []
