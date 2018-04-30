@@ -5,14 +5,14 @@ import numpy as np
 
 fish = cv2.face.FisherFaceRecognizer_create()
 emotions = [ "happy", "neutral", "surprised", "afraid", "angry", "disgusted", "sad"]
-
+'''This function has been written by Paul Van Gent from www.paulvangent.com'''
 def retrieveFiles(emotion):
     files = glob.glob("D:\\University\\Dissertation\\Database\\completeDataset\\%s\\*" %emotion)
     random.shuffle(files)
     training = files[:int(len(files)*0.8)]
     predicting = files[-int(len(files)*0.2):]
     return training, predicting
-
+'''This function has been written by Paul Van Gent from www.paulvangent.com'''
 def makeSets():
     trainingData = []
     trainingLabels = []
@@ -35,7 +35,7 @@ def makeSets():
         
         
     return trainingData, trainingLabels, predictionData, predictionLabels
-
+'''This function has been written by Paul Van Gent from www.paulvangent.com'''
 def runRecognizer():
     trainingData, trainingLabels, predictionData, predictionLabels = makeSets()
 
